@@ -16,7 +16,9 @@ const server = http.createServer((req, res) => {
         if (req.url === '/') {
             //TODO - Display message "<h1>Welcome to Lab Exercise 03</h1>"
             res.setHeader('Content-Type', 'text/html');
-            res.end('<h1>Welcome to Lab Exercise 03</h1>');
+            res.write('<h1>Welcome to Lab Exercise 03</h1>');
+            res.end();
+            return;
         }
 
         if (req.url === '/employee') {
