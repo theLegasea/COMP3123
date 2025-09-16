@@ -1,4 +1,17 @@
 //TODO - Create Employee Module here and export to use in index.js
+module.exports = {
+    getAllEmployees: () => employees,
+
+    getEmployeeNames: () => {
+        return employees
+            .map(emp => `${emp.firstName} ${emp.lastName}`)
+            .sort();
+    },
+
+    getTotalSalary: () => {
+        return employees.reduce((total, emp) => total + emp.Salary, 0);
+    }
+};
 
 let employees = [
     {id: 1, firstName: "Pritesh", lastName: "Patel", email: "pritesh@gmail.com", Salary:5000},
