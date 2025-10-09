@@ -22,6 +22,6 @@ connectDB(DB_URL)
         });
     })
     .catch(err => {
-        console.error('Could not connect to the database. Exiting now...', err);
+        console.error('Could not connect to the database.', err);
         process.exit(1);
     });
