@@ -30,7 +30,7 @@ userRoutes.post('/signup', validationRules, (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     user = new userModel(req.body.content)
-    note.save().then(() => {
+    user.save().then(() => {
         res.status(201).send();
     }).catch(err => {
         res.status(500).send({
@@ -47,7 +47,7 @@ userRoutes.post('/login', validationRules, (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     user = new userModel(req.body.content)
-    note.save().then(() => {
+    user.save().then(() => {
         res.status(201).send();
     }).catch(err => {
         res.status(500).send({
