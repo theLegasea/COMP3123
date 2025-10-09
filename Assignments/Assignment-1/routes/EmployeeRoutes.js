@@ -1,6 +1,7 @@
 const employeeModel = require('../models/EmployeeModel');
 const express = require('express');
 const employeeRoutes = express.Router();
+const { body, validationResult } = require('express-validator');
 
 const validationRules = [
     body('first_name')
@@ -92,19 +93,8 @@ employeeRoutes.put('/employees/:employeeId', validationRules, (req, res) => {
     });
 });
 // Delete Employee by ID
-employeeRoutes.delete('/employees', (req, res) => {
-    const eid = req.query.eid;
-    if (!eid) {
-        return res.status(400).send({
-            message: "Query parameter 'eid' is required"
-        });
-    }
-    employeeModel.findByIdAndDelete(eid).then(data => {
-        if (!data) {
-            return res.status(404).send({
-                message: "Employee not found"
-            });
-        }
+employeeRoutes.delete('/employees/:employeeId', (req, res) => {
+    employeeModel.findByIdAndDelete(req.params.employeeId).then(data => {
         res.status(204).send();
     }).catch(err => {
         res.status(500).send({
