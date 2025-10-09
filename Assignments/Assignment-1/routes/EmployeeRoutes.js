@@ -2,13 +2,48 @@ const employeeModel = require('../models/EmployeeModel');
 const express = require('express');
 const employeeRoutes = express.Router();
 
+const validationRules = [
+    body('first_name')
+        .notEmpty()
+        .withMessage('First name is required')
+        .isLength({ max: 50 }),
+    body('last_name')
+        .notEmpty()
+        .withMessage('Last name is required')
+        .isLength({ max: 50 }),
+    body('email')
+        .isEmail()
+        .withMessage('Must be a valid email')
+        .normalizeEmail(),
+    body('position')
+        .notEmpty()
+        .withMessage('Position is required')
+        .isLength({ max: 100 }),
+    body('salary')
+        .isFloat({ min: 0 })
+        .withMessage('Must be a positive number'),
+    body('date_of_joining')
+        .notEmpty()
+        .withMessage('Date of joining is required')
+        .isISO8601(),
+    body('department')
+        .notEmpty()
+        .withMessage('Department is required')
+        .isLength({ max: 100 }),
+    body('created_at')
+        .optional()
+        .isISO8601(),
+    body('updated_at')
+        .optional()
+        .isISO8601()
+]
+
 // Create Employee
-employeeRoutes.post('/employees', (req, res) => {
+employeeRoutes.post('/employees', validationRules, (req, res) => {
     // Validate request
-    if (!req.body.content) {
-        return res.status(400).send({
-            message: "Fields must not be empty"
-        });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
     employee = new employeeModel(req.body.content)
     employee.save().then(() => {
@@ -19,6 +54,7 @@ employeeRoutes.post('/employees', (req, res) => {
         });
     });
 });
+
 // Get all Employees
 employeeRoutes.get('/employees', (req, res) => {
     employeeModel.find({}).exec().then(data => {
@@ -40,7 +76,7 @@ employeeRoutes.get('/employees/:employeeId', (req, res) => {
     });
 });
 // Update Employee by ID
-employeeRoutes.put('/employees/:employeeId', (req, res) => {
+employeeRoutes.put('/employees/:employeeId', validationRules, (req, res) => {
     // Validate request
     if (!req.body.content) {
         return res.status(400).send({
@@ -56,8 +92,19 @@ employeeRoutes.put('/employees/:employeeId', (req, res) => {
     });
 });
 // Delete Employee by ID
-employeeRoutes.delete('/employees/:employeeId', (req, res) => {
-    employeeModel.findByIdAndDelete(req.params.employeeId).then(data => {
+employeeRoutes.delete('/employees', (req, res) => {
+    const eid = req.query.eid;
+    if (!eid) {
+        return res.status(400).send({
+            message: "Query parameter 'eid' is required"
+        });
+    }
+    employeeModel.findByIdAndDelete(eid).then(data => {
+        if (!data) {
+            return res.status(404).send({
+                message: "Employee not found"
+            });
+        }
         res.status(204).send();
     }).catch(err => {
         res.status(500).send({
