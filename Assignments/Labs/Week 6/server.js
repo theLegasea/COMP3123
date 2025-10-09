@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const noteRouter = require('./routes/NoteRoutes.js');
 
 // TODO - Update your mongoDB Atals Url here to Connect to the database
-const DB_URL = process.env.DB_URL || "mongodb+srv://rileythomaselevate_db_user:ssS7dkjG6vrqsolI@comp3123.wfk58o8.mongodb.net/?retryWrites=true&w=majority&appName=comp3123";
+const DB_URL = process.env.DB_URL || "";
 const PORT = process.env.PORT || 8081;
 
 const app = express();
