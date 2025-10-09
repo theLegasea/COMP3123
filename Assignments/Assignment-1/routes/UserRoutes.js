@@ -55,3 +55,5 @@ userRoutes.post('/login', validationRules, (req, res) => {
         });
     });
 });
+
+module.exports = userRoutes;

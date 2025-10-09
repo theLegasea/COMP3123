@@ -102,3 +102,5 @@ employeeRoutes.delete('/employees/:employeeId', (req, res) => {
         });
     });
 });
+
+module.exports = employeeRoutes;
