@@ -1,5 +1,4 @@
 const express = require('express');
-const connectDB = require('./db');
 const userRoutes = require('./routes/UserRoutes');
 const employeeRoutes = require('./routes/EmployeeRoutes');
 
