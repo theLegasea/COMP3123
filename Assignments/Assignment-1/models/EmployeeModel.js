@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema({
-    employee : {
-        "_id": ObjectId,
         "first_name": String,
         "last_name": String,
         "email": String,
@@ -12,6 +10,5 @@ const employeeSchema = new mongoose.Schema({
         "department": String,
         "created_at": Date,
         "updated_at": Date
-    }
 });
 module.exports =  mongoose.model('Employee', employeeSchema);
