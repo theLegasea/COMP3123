@@ -1,0 +1,22 @@
+{
+  "name": "assignment-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theLegasea/COMP3123.git"
+  },
+  "author": "Legasea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theLegasea/COMP3123/issues"
+  },
+  "homepage": "https://github.com/theLegasea/COMP3123#readme",
+  "dependencies": {
+    "express-validator": "^7.2.1"
+  }
+}
