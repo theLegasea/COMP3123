@@ -14,10 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/emp', employeeRoutes);
 
-mongoose.connect(DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
+mongoose.connect(DB_URL).then(() => {
     console.log('Connected to the database');
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);

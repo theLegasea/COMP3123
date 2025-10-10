@@ -46,7 +46,7 @@ employeeRoutes.post('/employees', validationRules, (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    employee = new employeeModel(req.body.content)
+    employee = new employeeModel(req.body)
     employee.save().then(() => {
         res.status(201).send();
     }).catch(err => {
@@ -79,12 +79,12 @@ employeeRoutes.get('/employees/:employeeId', (req, res) => {
 // Update Employee by ID
 employeeRoutes.put('/employees/:employeeId', validationRules, (req, res) => {
     // Validate request
-    if (!req.body.content) {
+    if (!req.body) {
         return res.status(400).send({
             message: "Fields must not be empty"
         });
     }
-    employeeModel.findByIdAndUpdate(req.params.employeeId, req.body.content, { new: true }).then(data => {
+    employeeModel.findByIdAndUpdate(req.params.employeeId, req.body, { new: true }).then(data => {
         res.status(204).send();
     }).catch(err => {
         res.status(500).send({
