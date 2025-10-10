@@ -3,6 +3,8 @@ const express = require('express');
 const employeeRoutes = express.Router();
 const { body, validationResult } = require('express-validator');
 
+/*
+I think it is bad to do it this way?
 const validationRules = [
     body('first_name')
         .notEmpty()
@@ -37,16 +39,16 @@ const validationRules = [
     body('updated_at')
         .optional()
         .isISO8601()
-]
+]*/
 
 // Create Employee
-employeeRoutes.post('/employees', validationRules, (req, res) => {
+employeeRoutes.post('/employees', (req, res) => {
     // Validate request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    employee = new employeeModel(req.body)
+    const employee = new employeeModel(req.body)
     employee.save().then(() => {
         res.status(201).send();
     }).catch(err => {
@@ -77,7 +79,7 @@ employeeRoutes.get('/employees/:employeeId', (req, res) => {
     });
 });
 // Update Employee by ID
-employeeRoutes.put('/employees/:employeeId', validationRules, (req, res) => {
+employeeRoutes.put('/employees/:employeeId', (req, res) => {
     // Validate request
     if (!req.body) {
         return res.status(400).send({
