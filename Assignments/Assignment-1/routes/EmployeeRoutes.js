@@ -94,9 +94,13 @@ employeeRoutes.put('/employees/:employeeId', (req, res) => {
         });
     });
 });
-// Delete Employee by ID
-employeeRoutes.delete('/employees/:employeeId', (req, res) => {
-    employeeModel.findByIdAndDelete(req.params.employeeId).then(data => {
+// Delete Employee by query parameter
+employeeRoutes.delete('/employees', (req, res) => {
+    const employeeId = req.query.eid;
+    if (!employeeId) {
+        return res.status(400).send({ message: 'Employee ID (eid) is required' });
+    }
+    employeeModel.findByIdAndDelete(employeeId).then(data => {
         res.status(204).send();
     }).catch(err => {
         res.status(500).send({
