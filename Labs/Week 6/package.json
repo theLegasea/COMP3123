@@ -19,7 +19,9 @@
   "author": "Pritesh Patel",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0",
-    "mongoose": "^8.19.1"
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "mongodb-connection-string-url": "^2.6.0",
+    "mongoose": "^6.12.0"
   }
 }

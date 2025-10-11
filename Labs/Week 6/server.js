@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const noteRouter = require('./routes/NoteRoutes.js');
+require('dotenv').config();
 
 // TODO - Update your mongoDB Atals Url here to Connect to the database
 const DB_URL = process.env.DB_URL || "";
