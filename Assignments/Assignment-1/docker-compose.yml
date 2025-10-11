@@ -22,5 +22,17 @@ services:
       - .:/usr/src/app
     command: node server.js
 
+  mongo-express:
+    image: mongo-express:latest
+    restart: unless-stopped
+    ports:
+      - "8088:8088"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=comp3123-assignment1
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+
 volumes:
   mongodbdata:
