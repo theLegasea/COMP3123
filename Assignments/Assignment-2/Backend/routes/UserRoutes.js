@@ -3,6 +3,9 @@ const express = require('express');
 const userRoutes = express.Router();
 const {body, validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET
 
 // Signup
 userRoutes.post('/signup', (req, res) => {
@@ -39,20 +42,13 @@ userRoutes.post('/login', (req, res) => {
                 message: "Bad Username"
             });
         }
-        // hash
-        //const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-        //if (!passwordIsValid) {
-        //    return res.status(401).send({
-        //        message: "Bad Password"
-        //    });}
-
+        const token = jwt.sign({
+                userId: user._id, username: user.username},
+                JWT_SECRET, {expiresIn: '1h'});
         res.status(200).send({
             message: "Login successful"
         });
     });
-});
-userRoutes.get('/troubleshooting', (req, res) => {
-    res.status(200).send({message: "Test successful"});
 });
 
 module.exports = userRoutes;
