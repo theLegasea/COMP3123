@@ -1,6 +1,7 @@
 import AddUser from './components/users/AddUser';
 
-import {BrowserRouter, Navlink, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, NavLink, Route, Routes} from 'react-router-dom';
+import LoginUser from "./components/users/LoginUser";
 
 function App() {
     return (
@@ -8,10 +9,12 @@ function App() {
             <BrowserRouter>
                 <h1>Navigation</h1>
                 <nav>
-                    <NavLink to={"/user"}>User</NavLink> |{' '}
+                    <NavLink to={"/login"}>Login</NavLink> |{' '}
+                    <NavLink to={"/signup"}>Sign Up</NavLink>
                 </nav>
                 <Routes>
-                    <Route path="/user" element={<AddUser />} />
+                    <Route path="/login" element={<LoginUser />} />
+                    <Route path="/signup" element={<AddUser />} />
                 </Routes>
             </BrowserRouter>
         </div>

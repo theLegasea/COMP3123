@@ -10,7 +10,9 @@ services:
       - mongodbdata:/data/db
 
   app:
-    build: .
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
     depends_on:
       - comp3123-assignment1
     environment:
@@ -19,7 +21,7 @@ services:
     ports:
       - "8089:8089"
     volumes:
-      - .:/usr/src/app
+      - ./Backend:/usr/src/app
     command: node server.js
 
   mongo-express:
