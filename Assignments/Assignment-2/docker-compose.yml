@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  comp3123-assignment1:
+    image: mongo:latest
+    container_name: comp3123-assignment1
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodbdata:/data/db
+
+  app:
+    build: .
+    depends_on:
+      - comp3123-assignment1
+    environment:
+      - DB_URL=mongodb://comp3123-assignment1:27017/comp3123-assignment1
+      - PORT=8089
+    ports:
+      - "8089:8089"
+    volumes:
+      - .:/usr/src/app
+    command: node server.js
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=comp3123-assignment1
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+
+volumes:
+  mongodbdata:
