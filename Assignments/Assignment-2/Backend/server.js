@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/UserRoutes');
 const employeeRoutes = require('./routes/EmployeeRoutes');
+const cors = require('cors');
+
 
 const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/comp3123-assignment1';
 const PORT = process.env.PORT || 8089;
@@ -10,7 +12,7 @@ const PORT = process.env.PORT || 8089;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors({origin: '*'}));
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/emp', employeeRoutes);
 

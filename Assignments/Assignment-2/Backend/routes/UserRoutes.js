@@ -1,12 +1,12 @@
 const userModel = require('../models/UserModel');
 const express = require('express');
 const userRoutes = express.Router();
-const { body, validationResult } = require('express-validator');
+const {body, validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
 
 // Signup
 userRoutes.post('/signup', (req, res) => {
-    if( !req.body) {
+    if (!req.body) {
         return res.status(400).send({
             message: "Fields must not be empty"
         });
@@ -28,12 +28,12 @@ userRoutes.post('/signup', (req, res) => {
 });
 // Login
 userRoutes.post('/login', (req, res) => {
-    if( !req.body.username || !req.body.password) {
+    if (!req.body.username || !req.body.password) {
         return res.status(400).send({
             message: "Username and password are required"
         });
     }
-    userModel.findOne({ username: req.body.username }).then(user => {
+    userModel.findOne({username: req.body.username}).then(user => {
         if (!user) {
             return res.status(401).send({
                 message: "Bad Username"
@@ -45,11 +45,14 @@ userRoutes.post('/login', (req, res) => {
         //    return res.status(401).send({
         //        message: "Bad Password"
         //    });}
-        
+
         res.status(200).send({
             message: "Login successful"
         });
     });
+});
+userRoutes.get('/troubleshooting', (req, res) => {
+    res.status(200).send({message: "Test successful"});
 });
 
 module.exports = userRoutes;

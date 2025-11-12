@@ -70,5 +70,23 @@ employeeRoutes.delete('/employees', (req, res) => {
         });
     });
 });
+// Search for employee by term
+employeeRoutes.get('/employees/search/:term', (req, res) => {
+    const searchTerm = req.params.term;
+    employeeModel.find({
+        // so sick
+        $or: [
+            { name: { $regex: searchTerm, $options: 'i' } },
+            { position: { $regex: searchTerm, $options: 'i' } },
+            { department: { $regex: searchTerm, $options: 'i' } }
+        ]
+    }).then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
+        });
+    });
+})
 
 module.exports = employeeRoutes;
