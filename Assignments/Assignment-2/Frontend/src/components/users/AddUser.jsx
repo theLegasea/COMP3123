@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import UserAPI from '../../api/users/UserAPI';
+import {useNavigate} from "react-router-dom";
 
 const INIT_USER = {
     username : '',
@@ -7,6 +8,7 @@ const INIT_USER = {
     password : '',
 }
 export default function AddUser() {
+    const navigate = useNavigate();
     const [user, setUser] = useState(INIT_USER);
     const handleInputChange = (e) => {
         const{name, value} = e.target;
@@ -20,9 +22,12 @@ export default function AddUser() {
         e.preventDefault();
         console.log('User to be added:', user);
         UserAPI.signUp(user).then(response => {
-            alert('User added successfully')
-        console.log('User added successfully:', response);})
+            // alert('User added successfully')
+        console.log('User added successfully:', response);
+        navigate('/login');
+        })
         .catch(error => {
+            alert(error);
             console.error('There was an error adding the user!', error);
         });
     }

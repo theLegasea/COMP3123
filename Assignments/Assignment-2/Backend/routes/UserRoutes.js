@@ -5,7 +5,7 @@ const {body, validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET || 'localTestKey'
 
 // Signup
 userRoutes.post('/signup', (req, res) => {
@@ -30,25 +30,43 @@ userRoutes.post('/signup', (req, res) => {
     });
 });
 // Login
-userRoutes.post('/login', (req, res) => {
+userRoutes.post('/login', async (req, res) => {
+    try{
     if (!req.body.username || !req.body.password) {
         return res.status(400).send({
             message: "Username and password are required"
         });
     }
-    userModel.findOne({username: req.body.username}).then(user => {
-        if (!user) {
-            return res.status(401).send({
-                message: "Bad Username"
-            });
-        }
-        const token = jwt.sign({
-                userId: user._id, username: user.username},
-                JWT_SECRET, {expiresIn: '1h'});
-        res.status(200).send({
-            message: "Login successful"
+    // TODO: switch this to compare hashed pass
+    const user = await userModel.findOne({username: req.body.username});
+    if (user.password && req.body.password !== user.password) {
+        return res.status(401).send({
+            message: "Invalid password"
         });
+    }
+    const token = jwt.sign(
+        {
+            userId: user._id,
+            username: user.username
+        },
+        JWT_SECRET,
+        {expiresIn: '1h'}
+    );
+    return res.status(200).json({
+        message: "Login successful",
+        token,
+        user: {
+            userId: user._id,
+            username: user.username,
+            email: user.email
+        }
     });
+    } catch (err) {
+        return res.status(500).send({
+            message: err.message
+        });
+    }
 });
 
-module.exports = userRoutes;
+
+    module.exports = userRoutes;
