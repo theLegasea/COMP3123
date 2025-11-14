@@ -48,11 +48,17 @@ const EmployeeAPI = {
 
     employeeSearch: async (searchTerm) => {
         try {
-            const res = await axiosInstance.get('/emp/employees/search', { params: { q: searchTerm } });
+            const st = (searchTerm || '').trim();
+            if (!st) {
+                const res = await axiosInstance.get('/emp/employees');
+                return res.data;
+            }
+            const res = await axiosInstance.get(`/emp/employees/search/${encodeURIComponent(st)}`);
             return res.data;
         } catch (err) {
             throw err;
         }
     }
 };
+
 export default EmployeeAPI;

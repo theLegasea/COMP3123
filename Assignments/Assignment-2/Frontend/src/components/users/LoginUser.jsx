@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import UserAPI from '../../api/users/UserAPI';
+import AuthContext from '../../auth/AuthContext';
 
 const INIT_LOGIN = {
     username: '',
@@ -10,6 +11,7 @@ const INIT_LOGIN = {
 export default function LoginUser() {
     const [loginData, setLoginData] = useState(INIT_LOGIN);
     const navigate = useNavigate();
+    const {setIsAuthenticated} = useContext(AuthContext);
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
@@ -28,6 +30,7 @@ export default function LoginUser() {
                 // STORE TOKEN
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('user', JSON.stringify(response.data.user));
+                setIsAuthenticated(true);
                 navigate('/');
             })
             .catch(error => {

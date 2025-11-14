@@ -76,7 +76,6 @@ employeeRoutes.get('/employees/search/:term', (req, res) => {
     employeeModel.find({
         // so sick
         $or: [
-            { name: { $regex: searchTerm, $options: 'i' } },
             { position: { $regex: searchTerm, $options: 'i' } },
             { department: { $regex: searchTerm, $options: 'i' } }
         ]

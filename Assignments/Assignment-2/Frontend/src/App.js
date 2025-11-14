@@ -1,22 +1,25 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import AddUser from './components/users/AddUser';
 import LoginUser from "./components/users/LoginUser";
 import EmployeeList from './components/employees/EmployeeList';
 import AddEmployee from './components/employees/AddEmployee';
+import ViewEmployee from './components/employees/ViewEmployee';
+import UpdateEmployee from './components/employees/UpdateEmployee';
 import {BrowserRouter, NavLink, Route, Routes, useNavigate} from 'react-router-dom';
-
+import {AuthProvider} from './auth/AuthContext';
+import AuthContext from './auth/AuthContext'
 
 
 function Container() {
     const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = React.useState(!!localStorage.getItem('token'));
+    const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
 
-    const token = localStorage.getItem('token');
+    /* const token = localStorage.getItem('token');
     if (token) {
         console.log('User is logged in');
     } else {
         console.log('User is not logged in');
-    }
+    } */
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -45,7 +48,8 @@ function Container() {
                 <Route path="/login" element={<LoginUser/>}/>
                 <Route path="/signup" element={<AddUser/>}/>
                 <Route path="/add-employee" element={<AddEmployee/>}/>
-                <Route path="*" element={<h2>Page Not Found</h2>}/>
+                <Route path="/view-employee/:employeeId" element={<ViewEmployee/>}/>
+                <Route path="/update-employee/:employeeId" element={<UpdateEmployee/>}/>
             </Routes>
         </div>
     );
@@ -53,8 +57,10 @@ function Container() {
 
 export default function App() {
     return (
-        <BrowserRouter>
-            <Container/>
-        </BrowserRouter>
+        <AuthProvider>
+            <BrowserRouter>
+                <Container/>
+            </BrowserRouter>
+        </AuthProvider>
     );
 }
