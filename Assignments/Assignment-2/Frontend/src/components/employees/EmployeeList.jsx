@@ -15,29 +15,30 @@ export default function EmployeeList() {
             setEmployees(employeeList);
         } catch (error) {
             console.error('Failed to fetch employees:', error);
-        }finally {
+        } finally {
             setLoading(false)
         }
     }
     useEffect(() => {
         fetchEmployees();
-    }, [])
+    }, []);
 
-    const handleSearch = async() => {
-        const sTerm= (searchTerm || '').trim();
-        if(!sTerm){
-            fetchEmployees();
-        }
-        setLoading(true);
-        try {
-            const result = await EmployeeAPI.employeeSearch(sTerm);
-            setEmployees(result || []);
-        } catch (error) {
-            console.error('Search failed:', error);
-        } finally {
-            setLoading(false);
-        }
-    }
+    useEffect(() => {
+        // TODO: debouncing so that this isnt disgusting
+        const handleSearch = async () => {
+            setLoading(true);
+            try {
+                const sTerm = (searchTerm || '').trim();
+                const result = await EmployeeAPI.employeeSearch(sTerm);
+                setEmployees(result || []);
+            } catch (error) {
+                console.error('Search failed:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        handleSearch();
+    }, [searchTerm]);
 
     const addEmployee = () => {
         navigate('/add-employee');
@@ -62,10 +63,9 @@ export default function EmployeeList() {
             <table border="1" cellPadding="5">
                 <thead>
                 <tr>
-                    <th>Search:</th>
-                    <th colSpan={2}><input type="text" placeholder="Position/Department"
-                    value={searchTerm} onChange={e => setSearchTerm(e.target.value)} /></th>
-                    <th><button onClick={handleSearch}>Search</button></th>
+                    <td>Search:</td>
+                    <th colSpan={3}><input type="text" placeholder="Position/Department"
+                                           value={searchTerm} onChange={e => setSearchTerm(e.target.value)}/></th>
                 </tr>
                 <tr>
                     <th>Name</th>
