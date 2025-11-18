@@ -7,6 +7,7 @@ import ViewEmployee from './components/employees/ViewEmployee';
 import UpdateEmployee from './components/employees/UpdateEmployee';
 import {BrowserRouter, NavLink, Route, Routes, useNavigate} from 'react-router-dom';
 import {AuthProvider} from './auth/AuthContext';
+import RequireAuth from './auth/RequireAuth';
 import AuthContext from './auth/AuthContext'
 
 
@@ -43,13 +44,14 @@ function Container() {
                     </>
                 )}
             </nav>
+
             <Routes>
-                <Route path="/" element={<EmployeeList/>}/>
                 <Route path="/login" element={<LoginUser/>}/>
                 <Route path="/signup" element={<AddUser/>}/>
-                <Route path="/add-employee" element={<AddEmployee/>}/>
-                <Route path="/view-employee/:employeeId" element={<ViewEmployee/>}/>
-                <Route path="/update-employee/:employeeId" element={<UpdateEmployee/>}/>
+                <Route path="/" element={<RequireAuth> <EmployeeList /> </RequireAuth>}/>
+                <Route path="/add-employee" element={<RequireAuth> <AddEmployee /> </RequireAuth>}/>
+                <Route path="/view-employee" element={<RequireAuth> <ViewEmployee /> </RequireAuth>}/>
+                <Route path="/update-employee" element={<RequireAuth> <UpdateEmployee /> </RequireAuth>}/>
             </Routes>
         </div>
     );

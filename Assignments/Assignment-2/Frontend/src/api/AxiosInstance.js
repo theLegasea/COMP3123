@@ -1,4 +1,6 @@
 import axios from "axios";
+// Citation
+// https://stackoverflow.com/questions/43051291/attach-authorization-header-for-all-axios-requests
 
 const BASE_URL = "http://localhost:8089/api/v1";
 
@@ -13,7 +15,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        // You can modify the request config here if needed
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers = config.headers || {};
+            config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     },
     (error) => {
