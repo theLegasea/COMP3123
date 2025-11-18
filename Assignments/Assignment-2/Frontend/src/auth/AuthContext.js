@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
     // TODO: auto timeout
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, logout }}>
             {children}
         </AuthContext.Provider>
     );
