@@ -1,7 +1,7 @@
-// javascript
-import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import {useParams, useNavigate} from 'react-router-dom'
 import EmployeeAPI from '../../api/employees/EmployeeAPI';
+import '../../css/UpdateEmployee.css'
 
 const INITIAL_EMPLOYEE = {
     first_name: '',
@@ -21,7 +21,7 @@ function formatDateForInput(date) {
 }
 
 export default function UpdateEmployee() {
-    const { id, employeeId } = useParams();
+    const {id, employeeId} = useParams();
     const empId = id || employeeId;
     const [employee, setEmployee] = useState(INITIAL_EMPLOYEE);
     const [loading, setLoading] = useState(false);
@@ -50,7 +50,7 @@ export default function UpdateEmployee() {
     }, [empId]);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setEmployee(prev => ({
             ...prev,
             [name]: name === 'salary' ? (value === '' ? '' : Number(value)) : value
@@ -60,7 +60,6 @@ export default function UpdateEmployee() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!empId) return;
-        // send update request
         EmployeeAPI.updateEmployee(empId, employee)
             .then((response) => {
                 console.log('Employee updated successfully:', response.data ?? response);
@@ -71,42 +70,121 @@ export default function UpdateEmployee() {
             });
     }
 
-    if (loading) return <div>Loading employee...</div>
+    const handleCancel = () => navigate('/');
+
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center py-5">
+                <div className="spinner-border text-secondary" role="status"
+                     style={{width: '1.2rem', height: '1.2rem'}}>
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div>
-            <h2>Update Employee</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>First Name: </label>
-                    <input type="text" name="first_name" value={employee.first_name} onChange={handleInputChange}/>
+        <div className="d-flex justify-content-center">
+            <div className="card update-employee p-3 w-100">
+                <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h3 className="mb-0">Update Employee</h3>
+                        <small className="text-muted">ID: {empId}</small>
+                    </div>
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label className="form-label small fw-semibold">First Name</label>
+                            <input
+                                type="text"
+                                className="form-control form-control-sm"
+                                name="first_name"
+                                value={employee.first_name}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label small fw-semibold">Last Name</label>
+                            <input
+                                type="text"
+                                className="form-control form-control-sm"
+                                name="last_name"
+                                value={employee.last_name}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label small fw-semibold">Email</label>
+                            <input
+                                type="email"
+                                className="form-control form-control-sm"
+                                name="email"
+                                value={employee.email}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label small fw-semibold">Position</label>
+                            <input
+                                type="text"
+                                className="form-control form-control-sm"
+                                name="position"
+                                value={employee.position}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label small fw-semibold">Department</label>
+                            <input
+                                type="text"
+                                className="form-control form-control-sm"
+                                name="department"
+                                value={employee.department}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label small fw-semibold">Salary</label>
+                            <input
+                                type="number"
+                                className="form-control form-control-sm"
+                                name="salary"
+                                value={employee.salary}
+                                onChange={handleInputChange}
+                                min="0"
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label small fw-semibold">Date of Joining</label>
+                            <input
+                                type="date"
+                                className="form-control form-control-sm"
+                                name="date_of_joining"
+                                value={employee.date_of_joining}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <div className="d-flex justify-content-end gap-2">
+                            <button type="button" className="btn btn-sm btn-outline-secondary" onClick={handleCancel}>
+                                Cancel
+                            </button>
+                            <button type="submit" className="btn btn-sm btn-primary">
+                                Update Employee
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div>
-                    <label>Last Name: </label>
-                    <input type="text" name="last_name" value={employee.last_name} onChange={handleInputChange}/>
-                </div>
-                <div>
-                    <label>Email: </label>
-                    <input type="email" name="email" value={employee.email} onChange={handleInputChange}/>
-                </div>
-                <div>
-                    <label>Position: </label>
-                    <input type="text" name="position" value={employee.position} onChange={handleInputChange}/>
-                </div>
-                <div>
-                    <label>Salary: </label>
-                    <input type="number" name="salary" value={employee.salary} onChange={handleInputChange}/>
-                </div>
-                <div>
-                    <label>Date of Joining: </label>
-                    <input type="date" name="date_of_joining" value={employee.date_of_joining} onChange={handleInputChange}/>
-                </div>
-                <div>
-                    <label>Department: </label>
-                    <input type="text" name="department" value={employee.department} onChange={handleInputChange}/>
-                </div>
-                <button type="submit">Update Employee</button>
-            </form>
+            </div>
         </div>
     )
 }
