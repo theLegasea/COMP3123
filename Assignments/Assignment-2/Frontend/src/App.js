@@ -61,7 +61,8 @@ function Container() {
                     <Route path="/" element={<RequireAuth> <EmployeeList/> </RequireAuth>}/>
                     <Route path="/add-employee" element={<RequireAuth> <AddEmployee/> </RequireAuth>}/>
                     <Route path="/view-employee/:employeeId" element={<RequireAuth> <ViewEmployee/> </RequireAuth>}/>
-                    <Route path="/update-employee/:employeeId" element={<RequireAuth> <UpdateEmployee/> </RequireAuth>}/>
+                    <Route path="/update-employee/:employeeId"
+                           element={<RequireAuth> <UpdateEmployee/> </RequireAuth>}/>
                 </Routes>
             </main>
         </div>

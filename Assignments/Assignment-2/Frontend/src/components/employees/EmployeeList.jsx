@@ -80,7 +80,8 @@ export default function EmployeeList() {
 
             {loading ? (
                 <div className="d-flex justify-content-center py-3">
-                    <div className="spinner-border text-secondary" role="status" style={{width: '1.2rem', height: '1.2rem'}}>
+                    <div className="spinner-border text-secondary" role="status"
+                         style={{width: '1.2rem', height: '1.2rem'}}>
                         <span className="visually-hidden">Loading...</span>
                     </div>
                 </div>
@@ -105,9 +106,15 @@ export default function EmployeeList() {
                                 <td>{employee.position}</td>
                                 <td>
                                     <div className="btn-group" role="group" aria-label="actions">
-                                        <button className="btn btn-sm btn-outline-secondary" onClick={() => viewEmployee(employee._id)}>View</button>
-                                        <button className="btn btn-sm btn-outline-secondary" onClick={() => updateEmployee(employee._id)}>Update</button>
-                                        <button className="btn btn-sm btn-outline-danger" onClick={() => deleteEmployee(employee._id)}>Delete</button>
+                                        <button className="btn btn-sm btn-outline-secondary"
+                                                onClick={() => viewEmployee(employee._id)}>View
+                                        </button>
+                                        <button className="btn btn-sm btn-outline-secondary"
+                                                onClick={() => updateEmployee(employee._id)}>Update
+                                        </button>
+                                        <button className="btn btn-sm btn-outline-danger"
+                                                onClick={() => deleteEmployee(employee._id)}>Delete
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
