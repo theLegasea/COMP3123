@@ -1,34 +1,49 @@
-version: '3.8'
 services:
-  comp3123-assignment2:
+  mongodb:
     image: mongo:latest
-    container_name: comp3123-assignment2
+    container_name: comp3123-assignment2-mongodb
     restart: unless-stopped
+    networks:
+      - backend
     ports:
       - "27017:27017"
     volumes:
       - mongodbdata:/data/db
 
-  app:
+  backend:
     build:
-      context: ./Backend
+      context: backend
       dockerfile: Dockerfile
+    container_name: comp3123-assignment2-backend
     depends_on:
-      - comp3123-assignment2
+      - mongodb
+    networks:
+      - backend
     environment:
-      - DB_URL=mongodb://comp3123-assignment2:27017/comp3123-assignment2
-      - PORT=8089
+      - DB_URL=mongodb://mongodb:27017/comp3123-assignment2
     ports:
       - "8089:8089"
     volumes:
-      - ./Backend:/usr/src/app
+      - ./backend:/usr/src/app
     command: node server.js
+
+  frontend:
+    build: frontend/.
+    container_name: comp3123-assignment2-frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:3001/api/v1
+    depends_on:
+      - backend
+    networks:
+      - backend
 
   mongo-express:
     image: mongo-express:latest
     restart: unless-stopped
     ports:
-      - "8081:8081"
+      - "8091:8081"
     environment:
       - ME_CONFIG_MONGODB_SERVER=comp3123-assignment2
       - ME_CONFIG_MONGODB_PORT=27017
@@ -38,3 +53,6 @@ services:
 
 volumes:
   mongodbdata:
+
+networks:
+  backend:
